@@ -11,6 +11,11 @@ app.get("/user", (req,res)=>{
     res.send({firstName:'Abhishek', lastName:'Harish'})
 })
 
+//app.post
+app.post("/user", (req,res)=>{
+    res.send("Saved data to Database!")
+})
+
 //app.use -> route matches with all API calls
 app.use("/test", (req,res)=>{
     res.send('Hello from the Server')
