@@ -16,6 +16,11 @@ app.post("/user", (req,res)=>{
     res.send("Saved data to Database!")
 })
 
+//app.delete
+app.delete("/user", (req,res)=>{
+    res.send("Deleted data successfully!")
+})
+
 //app.use -> route matches with all API calls
 app.use("/test", (req,res)=>{
     res.send('Hello from the Server')
