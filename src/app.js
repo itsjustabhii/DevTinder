@@ -14,6 +14,18 @@ app.get("/user",userAuth, (req,res)=>{
     res.send("User Data Sent!")
 })
 
+app.get("/user/getAllData", (err,req,res,next)=>{
+    try{
+        //code to connect to DB and return back
+        throw new Error("infienfif")
+        res.send("User data sent!")
+    }
+    catch(err)
+    {
+        res.status(500).send("Something went wrong!")
+    }
+})
+
 //Only if Authorisation completes, /admin executes
 app.get("/admin/getAllData", (req,res)=>{
     res.send("All data sent")
