@@ -7,7 +7,8 @@ const app = express()
 //Request handler -> Order of Routes matters in execution
 
 //app.get -> route only matches API calls with /user
-app.get("/user", (req,res)=>{
+app.get("/user/:userId/:password/:name", (req,res)=>{
+    console.log(req.params)
     res.send({firstName:'Abhishek', lastName:'Harish'})
 })
 
