@@ -2,7 +2,13 @@ const express = require('express')
 
 const app = express()
 
-app.use("/user",(req,res) =>{
+//Handle Auth middleware for all GET,POST,... request
+app.use("/admin",(req,res,next) =>{
+    const token = "ihjbcywdu&jwknc*$njewcn$"
+    const isAuthorised = token === "xyz"
+    if(!isAuthorised){
+        res.status(401).send("Unauthorised Request")
+    }
     res.send("Route Handler 1")
 })
 
