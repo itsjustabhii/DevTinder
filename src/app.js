@@ -1,5 +1,5 @@
 const express = require('express')
-
+const connectDB = require("./config/database")
 const app = express()
 const {adminAuth, userAuth} = require("./middleswares/auth")
 
@@ -35,6 +35,12 @@ app.get("/admin/deleteUser", (req,res)=>{
     res.send("Delete a user!")
 })
 
-app.listen(3000, ()=>{
+
+connectDB().then(()=>{
+    console.log('Database connection successful!')
+    app.listen(3000, ()=>{
     console.log("Server is successfully listening on PORT 3000...")
+})
+}).catch((err)=>{
+    console.error('Database cannot be connected')
 })
