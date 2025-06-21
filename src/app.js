@@ -1,7 +1,31 @@
 const express = require('express')
 const connectDB = require("./config/database")
 const app = express()
-const {adminAuth, userAuth} = require("./middleswares/auth")
+const User = require("./models/user")
+// const {adminAuth, userAuth} = require("./middleswares/auth")
+
+app.post("/signup", async(req,res)=>{
+    //Creating new instance of a user
+    const user  = new User ({
+        firstName: 'Abhishek',
+        lastName: 'Harish',
+        emailId: 'abhishek@gmail.com',
+        password: 'admin123'
+    })
+    
+    await user.save()
+    res.send('User data added!')
+})
+
+connectDB().then(()=>{
+    console.log('Database connection successful!')
+    app.listen(3000, ()=>{
+    console.log("Server is successfully listening on PORT 3000...")
+})
+})
+.catch((err)=>{
+    console.error('Database cannot be connected', err.message)
+})
 
 // //Handle Auth middleware for all GET,POST,... request
 // app.use("/admin", adminAuth)
@@ -36,11 +60,4 @@ const {adminAuth, userAuth} = require("./middleswares/auth")
 // })
 
 
-connectDB().then(()=>{
-    console.log('Database connection successful!')
-    app.listen(3000, ()=>{
-    console.log("Server is successfully listening on PORT 3000...")
-})
-}).catch((err)=>{
-    console.error('Database cannot be connected')
-})
+
