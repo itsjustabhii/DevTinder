@@ -4,18 +4,21 @@ const app = express()
 const User = require("./models/user")
 // const {adminAuth, userAuth} = require("./middleswares/auth")
 
+app.use(express.json())
+
 app.post("/signup", async(req,res)=>{
     //Creating new instance of a user
     const user  = new User ({
-        firstName: 'Abhishek',
-        lastName: 'Harish',
-        emailId: 'abhishek@gmail.com',
-        password: 'admin123'
+        firstName: 'Rafael',
+        lastName: 'Nadal',
+        emailId: 'nadal@gmail.com',
+        password: 'nadal@123'
     })
     
     await user.save()
     res.send('User data added!')
 })
+
 
 connectDB().then(()=>{
     console.log('Database connection successful!')
