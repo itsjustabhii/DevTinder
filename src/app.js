@@ -8,12 +8,7 @@ app.use(express.json())
 
 app.post("/signup", async(req,res)=>{
     //Creating new instance of a user
-    const user  = new User ({
-        firstName: 'Rafael',
-        lastName: 'Nadal',
-        emailId: 'nadal@gmail.com',
-        password: 'nadal@123'
-    })
+    const user  = new User (req.body)
     
     await user.save()
     res.send('User data added!')
