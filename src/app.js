@@ -32,7 +32,7 @@ app.get("/user", async(req,res)=>{
     }
 })
 
-//Feed - Get all data
+//Feed - Get all users from database
 app.get("/feed", async(req,res) => {
     try {
         const users = await User.find({})
@@ -42,6 +42,30 @@ app.get("/feed", async(req,res) => {
     }
 })
 
+//Delete a user by ID
+app.delete("/user", async(req,res) => {
+    const userId = req.body.userId
+    try {
+        // const user = await User.findByIdAndDelete({_id: userId}) either this or next line is the same
+        const user = await User.findByIdAndDelete(userId)
+        res.send("User deleted successfully")
+    } catch (err) {
+        res.status(400).send('Something went wrong!')
+    }
+})
+
+//Update the user
+app.patch("/user", async(req,res) => {
+    const userId = req.body.userId
+    const data = req.body
+    console.log(data)
+    try {
+         await User.findByIdAndUpdate(userId, data)
+        res.send("Update successful")
+    } catch (err) {
+        res.status(400).send("Something went wrong!")
+    }
+})
 
 connectDB().then(()=>{
     console.log('Database connection successful!')
