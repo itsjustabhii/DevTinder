@@ -3,16 +3,27 @@ const connectDB = require("./config/database")
 const app = express()
 const User = require("./models/user")
 // const {adminAuth, userAuth} = require("./middleswares/auth")
+const {validateSigUpData} = require('./utils/validation')
 
 app.use(express.json())
 
 //User Signup
 app.post("/signup", async(req,res)=>{
+    try{
+    //validate the data
+    validateSigUpData(req)
+
+    //Encrypt the password
+    
     //Creating new instance of a user
     const user  = new User (req.body)
     
     await user.save()
     res.send('User data added!')
+    } catch(err){
+        res.status(400).send("ERROR: "+ err.message)
+    }
+    
 })
 
 //Get USER by email
