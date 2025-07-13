@@ -8,11 +8,11 @@
   | Can Have Comments | ✅ Yes | ❌ No |
   | Conversion | No conversion needed | Use `JSON.stringify()` / `JSON.parse()` |
 
-  - Difference between PATCH and PUT
-    | Feature | `PUT` | `PATCH` |
-    | ------------ | ---------------------- | -------------------------- |
-    | Update type | Full replacement | Partial update |
-    | Idempotent? | ✅ Yes | ✅ Usually, but not always |
-    | Body content | Entire object required | Only the fields to update |
-    | Performance | May be heavier | Lighter and more efficient |
-    | Use case | Replace full resource | Modify one or a few fields |
+- Difference between PATCH and PUT
+  | Feature | `PUT` | `PATCH` |
+  | ------------ | ---------------------- | -------------------------- |
+  | Update type | Full replacement | Partial update |
+  | Idempotent? | ✅ Yes | ✅ Usually, but not always |
+  | Body content | Entire object required | Only the fields to update |
+  | Performance | May be heavier | Lighter and more efficient |
+  | Use case | Replace full resource | Modify one or a few fields |
