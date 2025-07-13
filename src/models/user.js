@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
         type:[String]
     }
 
-})
+}, {timestamps:true})
 
 //Creating user model
 module.exports = mongoose.model("User", userSchema)
