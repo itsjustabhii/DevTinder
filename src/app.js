@@ -4,7 +4,7 @@ const app = express()
 const User = require("./models/user")
 // const {adminAuth, userAuth} = require("./middleswares/auth")
 const {validateSigUpData} = require('./utils/validation')
-const brcrypt = require("bcrypt")
+const bcrypt = require("bcrypt")
 
 app.use(express.json())
 
@@ -17,7 +17,7 @@ app.post("/signup", async(req,res)=>{
     const {password} = req.body
 
     //Encrypt the password
-    const passwordHash = await brcrypt.hash(password, 10)
+    const passwordHash = await bcrypt.hash(password, 10)
     
     //Creating new instance of a user
     const user  = new User ({
@@ -33,6 +33,26 @@ app.post("/signup", async(req,res)=>{
         res.status(400).send("ERROR: "+ err.message)
     }
     
+})
+
+//Login API
+app.post("/login", async(req,res) =>{
+    try {
+        const {emailId, password} = req.body
+        //To check if user's email ID already exists or no
+        const user = await User.findOne({emailId: emailId})        
+        if(!user){
+            throw new Error("Invalid Credentials!")
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password) //comparing the typed password to the password stored in DB
+        if(isPasswordValid){
+            res.send('Login Successful')
+        } else {
+            throw new Error("Invalid Credentials")
+        }
+    } catch (err) {
+        res.status(400).send("ERROR : " + err.message)
+    }
 })
 
 //Get USER by email
