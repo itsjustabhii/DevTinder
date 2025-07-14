@@ -4,6 +4,7 @@ const app = express()
 const User = require("./models/user")
 // const {adminAuth, userAuth} = require("./middleswares/auth")
 const {validateSigUpData} = require('./utils/validation')
+const brcrypt = require("bcrypt")
 
 app.use(express.json())
 
@@ -13,10 +14,18 @@ app.post("/signup", async(req,res)=>{
     //validate the data
     validateSigUpData(req)
 
+    const {password} = req.body
+
     //Encrypt the password
+    const passwordHash = await brcrypt.hash(password, 10)
     
     //Creating new instance of a user
-    const user  = new User (req.body)
+    const user  = new User ({
+        firstName,
+        lastName,
+        emailId,
+        password:passwordHash   //stores password in DB
+    })
     
     await user.save()
     res.send('User data added!')
