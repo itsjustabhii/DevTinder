@@ -57,6 +57,18 @@ app.post("/login", async(req,res) =>{
     }
 })
 
+//Get Profile
+app.get("/profile", async(req, res)=>{
+    const cookies = req.cookies
+
+    const {token} = cookies
+    //validate the token
+
+
+    console.log(cookies)
+    res.send('Reading cookies!')
+})
+
 //Get USER by email
 app.get("/user", async(req,res)=>{
     const userEmail = req.body.emailId
