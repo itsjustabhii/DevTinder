@@ -5,8 +5,10 @@ const User = require("./models/user")
 // const {adminAuth, userAuth} = require("./middleswares/auth")
 const {validateSigUpData} = require('./utils/validation')
 const bcrypt = require("bcrypt")
+const cookieParser = require("cookie-parser")
 
 app.use(express.json())
+app.use(cookieParser())
 
 //User Signup
 app.post("/signup", async(req,res)=>{
