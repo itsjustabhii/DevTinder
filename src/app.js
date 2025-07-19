@@ -6,6 +6,7 @@ const User = require("./models/user")
 const {validateSigUpData} = require('./utils/validation')
 const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
+const jwt = require("jsonwebtoken")
 
 app.use(express.json())
 app.use(cookieParser())
