@@ -7,6 +7,7 @@ const {validateSigUpData} = require('./utils/validation')
 const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
+const {userAuth} = require("./middleswares/auth")
 
 app.use(express.json())
 app.use(cookieParser())
@@ -65,24 +66,24 @@ app.post("/login", async(req,res) =>{
 })
 
 //Get Profile
-app.get("/profile", async(req, res)=>{
+app.get("/profile", userAuth, async(req, res)=>{
     try {
-        const cookies = req.cookies
+    //     const cookies = req.cookies
 
-    const {token} = cookies
-    if(!token){
-        throw new Error("Invalid Token!")
-    }
-    //validate the token
-    const decodedMessage = await jwt.verify(token, "DEV@Tinder$666")
-    console.log(decodedMessage)
-    const {_id} = decodedMessage //Get ID of logged in user
-    console.log("Logged in user is: " + _id)
+    //     const {token} = cookies
+    // if(!token){
+    //     throw new Error("Invalid Token!")
+    // }
+    // //validate the token
+    // const decodedMessage = await jwt.verify(token, "DEV@Tinder$666")
+    // console.log(decodedMessage)
+    // const {_id} = decodedMessage //Get ID of logged in user
+    // console.log("Logged in user is: " + _id)
 
-    const user = await User.findById(_id)
-    if(!user){ //If user doesn't exists
-        throw new Error("User doesn't exists!")
-    }
+    const user = req.user
+    // if(!user){ //If user doesn't exists
+    //     throw new Error("User doesn't exists!")
+    // }
     res.send(user)
     } catch (error) {
         res.status(400).send("ERROR: " + err.message)
