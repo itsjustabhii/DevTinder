@@ -49,6 +49,12 @@ app.post("/login", async(req,res) =>{
         }
         const isPasswordValid = await bcrypt.compare(password, user.password) //comparing the typed password to the password stored in DB
         if(isPasswordValid){
+            //Create a JWT Token
+            const token = await jwt.sign({_id:user._id}, "DEV@Tinder$666")
+            console.log(token)
+
+            //Add the token to cookie and send the response back to the user
+            res.cookie("token",token)
             res.send('Login Successful')
         } else {
             throw new Error("Invalid Credentials")
@@ -60,14 +66,27 @@ app.post("/login", async(req,res) =>{
 
 //Get Profile
 app.get("/profile", async(req, res)=>{
-    const cookies = req.cookies
+    try {
+        const cookies = req.cookies
 
     const {token} = cookies
+    if(!token){
+        throw new Error("Invalid Token!")
+    }
     //validate the token
+    const decodedMessage = await jwt.verify(token, "DEV@Tinder$666")
+    console.log(decodedMessage)
+    const {_id} = decodedMessage //Get ID of logged in user
+    console.log("Logged in user is: " + _id)
 
-
-    console.log(cookies)
-    res.send('Reading cookies!')
+    const user = await User.findById(_id)
+    if(!user){ //If user doesn't exists
+        throw new Error("User doesn't exists!")
+    }
+    res.send(user)
+    } catch (error) {
+        res.status(400).send("ERROR: " + err.message)
+    } 
 })
 
 //Get USER by email
