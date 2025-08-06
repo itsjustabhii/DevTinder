@@ -1,4 +1,6 @@
 const express = require('express')
+const {validateSigUpData} = require('./utils/validation')
+const User = require("./models/user")
 
 const authRouter = express.Router() //Creating a router
 
