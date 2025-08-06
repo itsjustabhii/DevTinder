@@ -8,9 +8,16 @@ const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
 const {userAuth} = require("./middleswares/auth")
+const profileRouter = require('./routes/profile')
+const authRouter = require('./routes/auth')
+const connectionRequest = require('./routes/connectRequest')
 
 app.use(express.json())
 app.use(cookieParser())
+
+app.use('/', profileRouter)
+app.use('/', authRouter)
+app.use('/', connectionRequest)
 
 //User Signup
 app.post("/signup", async(req,res)=>{
