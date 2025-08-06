@@ -1,5 +1,5 @@
 const express = require('express')
-
+const {userAuth} = require("./middleswares/auth")
 const profileRouter = express.Router()
 
 profileRouter.get("/profile", userAuth, async(req, res)=>{
