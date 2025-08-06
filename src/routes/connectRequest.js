@@ -1,5 +1,5 @@
 const express = require('express')
-const {userAuth} = require("./middleswares/auth")
+const {userAuth} = require("../middleswares/auth")
 const connectionRequest = express.Router()
 
 connectionRequest.post("/sendConnectionRequest", userAuth, async(req, res) =>{
