@@ -19,6 +19,9 @@ const connectionRequestSchema = new mongoose.Schema({
     timestamps:true,
 })
 
+//Indexing -> makes querying very fast
+connectionRequestSchema.index({fromUserId: 1, toUserId:1})
+
 //Validation to prevent user from sending request to themself
 //checks before storing any value in DB
 connectionRequestSchema.pre("save", function() {
