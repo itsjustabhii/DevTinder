@@ -19,6 +19,17 @@ const connectionRequestSchema = new mongoose.Schema({
     timestamps:true,
 })
 
+//Validation to prevent user from sending request to themself
+//checks before storing any value in DB
+connectionRequestSchema.pre("save", function() {
+    const connectionRequest = this
+    //check if fromUserId is same as toUserId
+    if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
+        throw new Error("Cannot send connection request to yourself!")
+    }
+    next()
+})
+
 //Creating a model
 const ConnectionRequestModel = new mongoose.model(
     "ConnectionRequest", connectionRequestSchema
