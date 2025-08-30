@@ -11,6 +11,7 @@ const {userAuth} = require("./middleswares/auth")
 const profileRouter = require('./routes/profile')
 const authRouter = require('./routes/auth')
 const connectionRequest = require('./routes/connectRequest')
+const userRouter = require('./routes/user')
 
 app.use(express.json())
 app.use(cookieParser())
@@ -18,6 +19,7 @@ app.use(cookieParser())
 app.use('/', profileRouter)
 app.use('/', authRouter)
 app.use('/', connectionRequest)
+app.use('/', userRouter)
 
 //User Signup
 app.post("/signup", async(req,res)=>{
