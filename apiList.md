@@ -22,5 +22,5 @@ connectRequestRouter
 userRouter
 
 - GET/user/connection
-- GET/user/request
+- GET/user/requests/received
 - GET/user/feed
