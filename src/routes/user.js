@@ -2,6 +2,7 @@ const express = require('express')
 const { userAuth } = require('../middleswares/auth')
 const connectionRequest = require('../models/connectRequest')
 const userRouter = express.Router()
+const User = require("../models/user")
 
 const USER_SAFE_DATA = ["firstName", "lastName", "about", "age", "photoUrl", "gender", "skills"]
 
@@ -40,6 +41,45 @@ userRouter.get("/user/connections", userAuth, async(req, res) =>{
         res.json({data: connectionRequests })
     } catch (err) {
         res.status(400).send({message: "ERROR: " + err.message})
+    }
+})
+
+userRouter.get("/feed", userAuth, async (req, res) => {
+    try {
+        /* User must see all the cards except
+        - his own card
+        - his connections
+        - ignored people
+        - those who he has already sent connection request 
+        */
+       const loggedInUser = req.user
+
+       //Find all connection requests (sent + received)
+       const connectionRequests = await connectionRequest.find({
+        $or:[{fromUserId:loggedInUser._id}, {toUserId: loggedInUser._id} ]
+       })
+       .select("fromUserId, toUserId" )
+       .populate("fromUserId", "firstName")
+       .populate("toUserId", "firstName")
+
+       const hideUsersFromFeed = new Set() //to hide the users from appearing again
+       connectionRequests.forEach(req => {
+        hideUsersFromFeed.add(req.fromUserId.toString())
+        hideUsersFromFeed.add(req.toUserId.toString())
+       })
+
+       console.log(hideUsersFromFeed)
+
+       const users = await User.find({
+        $and: [
+            {_id: {$nin: Array.from(hideUsersFromFeed)}},
+            {_id: {$ne: loggedInUser._id}}
+        ]
+       }).select(USER_SAFE_DATA)
+        
+       res.send(users)
+    } catch (err) {
+        res.status(400).send({Message : "ERROR: " + err.message})
     }
 })
 
