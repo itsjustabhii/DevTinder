@@ -44,6 +44,7 @@ userRouter.get("/user/connections", userAuth, async(req, res) =>{
     }
 })
 
+//Feed API to display the accounts in the feed
 userRouter.get("/feed", userAuth, async (req, res) => {
     try {
         /* User must see all the cards except
@@ -53,6 +54,13 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         - those who he has already sent connection request 
         */
        const loggedInUser = req.user
+
+       //Obtain page number from the user request
+       const page = parseInt(req.query.page) || 1
+       let limit = parseInt(req.query.limit) || 10
+
+       limit = limit > 50?50 : limit
+       const skip = (page-1)*limit
 
        //Find all connection requests (sent + received)
        const connectionRequests = await connectionRequest.find({
@@ -75,7 +83,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
             {_id: {$nin: Array.from(hideUsersFromFeed)}},
             {_id: {$ne: loggedInUser._id}}
         ]
-       }).select(USER_SAFE_DATA)
+       }).select(USER_SAFE_DATA).skip(skip).limit(limit)
         
        res.send(users)
     } catch (err) {
