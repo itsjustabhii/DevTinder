@@ -22,6 +22,8 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
 
     const loggedInUser = req.user;
 
+    // Apply updates from request body onto the user document.
+    // This uses a simple shallow assignment per allowed key.
     Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
 
     await loggedInUser.save();
